@@ -1,14 +1,14 @@
-# Skill Board 🎨🤝✨
+# SkillSpark 🎨🤝✨
 
 **Teach what you know. Learn what you don’t. Trade skills with your community.**
 
-Skill Board is a colorful community board where people **teach each other skills through simple, mutual exchange** — turning passive networking into real learning, real connections, and real swaps.
+SkillSpark is a colorful community board where people **teach each other skills through simple, mutual exchange** — turning passive networking into real learning, real connections, and real swaps.
 
 ---
 
 ## Why it exists 🌍💡
 People usually see each other through **jobs, status, or credentials**.
-Skill Board helps people see each other through something more human:
+SkillSpark helps people see each other through something more human:
 
 - ✅ **What they can teach** (their strengths)
 - 🌱 **What they want to learn** (their growth)
@@ -18,7 +18,7 @@ That two-sided view makes it easy to discover mutual learning opportunities and 
 ---
 
 ## What you can do 🚀
-With Skill Board, people can:
+With SkillSpark, people can:
 
 - 🧠 **Share what they know**
 - 🔎 **Discover others nearby or online**
