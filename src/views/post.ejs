@@ -1,0 +1,70 @@
+<%- include('partials/header') %>
+
+<div class="page-header">
+  <h1>Post a Skill</h1>
+  <p class="subtitle">Share what you can teach or what you want to learn</p>
+</div>
+
+<% if (error) { %>
+  <div class="alert alert-error"><%= error %></div>
+<% } %>
+
+<div class="form-container">
+  <form method="POST" action="/board/post" class="post-form">
+    <fieldset class="form-section">
+      <legend>About You</legend>
+      <div class="form-group">
+        <label for="name">Name *</label>
+        <input type="text" id="name" name="name" required placeholder="Your full name">
+      </div>
+      <div class="form-group">
+        <label for="email">Email *</label>
+        <input type="email" id="email" name="email" required placeholder="your@email.com">
+        <small>If you've posted before, we'll add this skill to your existing profile.</small>
+      </div>
+      <div class="form-group">
+        <label for="location">Location</label>
+        <input type="text" id="location" name="location" placeholder="City, State">
+      </div>
+      <div class="form-group">
+        <label for="bio">Bio</label>
+        <textarea id="bio" name="bio" rows="3" placeholder="A little about yourself..."></textarea>
+      </div>
+    </fieldset>
+
+    <fieldset class="form-section">
+      <legend>Your Skill</legend>
+      <div class="form-group">
+        <label for="title">Skill Title *</label>
+        <input type="text" id="title" name="title" required placeholder="e.g., Python Programming, Acoustic Guitar">
+      </div>
+      <div class="form-group">
+        <label for="type">I want to... *</label>
+        <select id="type" name="type" required>
+          <option value="">Select...</option>
+          <option value="teach">Teach this skill</option>
+          <option value="learn">Learn this skill</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="category">Category</label>
+        <select id="category" name="category">
+          <% categories.forEach(cat => { %>
+            <option value="<%= cat %>"><%= cat %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" name="description" rows="4" placeholder="Tell us more about your experience or what you're looking for..."></textarea>
+      </div>
+    </fieldset>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary btn-large">Post to Board</button>
+      <a href="/board" class="btn btn-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
+
+<%- include('partials/footer') %>

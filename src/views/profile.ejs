@@ -1,0 +1,73 @@
+<%- include('partials/header') %>
+
+<div class="profile-header">
+  <div class="profile-avatar">
+    <%= user.name.charAt(0).toUpperCase() %>
+  </div>
+  <div class="profile-info">
+    <h1><%= user.name %></h1>
+    <% if (user.location) { %>
+      <p class="user-location">📍 <%= user.location %></p>
+    <% } %>
+    <% if (user.bio) { %>
+      <p class="user-bio"><%= user.bio %></p>
+    <% } %>
+    <p class="member-since">Member since <%= new Date(user.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long' }) %></p>
+  </div>
+</div>
+
+<div class="profile-skills">
+  <% const teachSkills = user.skills.filter(s => s.type === 'teach'); %>
+  <% const learnSkills = user.skills.filter(s => s.type === 'learn'); %>
+
+  <% if (teachSkills.length > 0) { %>
+    <section class="skill-section">
+      <h2 class="section-title teach-title">🎓 Teaching</h2>
+      <div class="skill-cards">
+        <% teachSkills.forEach(skill => { %>
+          <div class="skill-detail-card teach-card">
+            <div class="skill-detail-header">
+              <h3><%= skill.title %></h3>
+              <span class="badge teach-badge"><%= skill.category %></span>
+            </div>
+            <% if (skill.description) { %>
+              <p><%= skill.description %></p>
+            <% } %>
+          </div>
+        <% }) %>
+      </div>
+    </section>
+  <% } %>
+
+  <% if (learnSkills.length > 0) { %>
+    <section class="skill-section">
+      <h2 class="section-title learn-title">📚 Learning</h2>
+      <div class="skill-cards">
+        <% learnSkills.forEach(skill => { %>
+          <div class="skill-detail-card learn-card">
+            <div class="skill-detail-header">
+              <h3><%= skill.title %></h3>
+              <span class="badge learn-badge"><%= skill.category %></span>
+            </div>
+            <% if (skill.description) { %>
+              <p><%= skill.description %></p>
+            <% } %>
+          </div>
+        <% }) %>
+      </div>
+    </section>
+  <% } %>
+
+  <% if (user.skills.length === 0) { %>
+    <div class="empty-state">
+      <p>No skills posted yet. <a href="/board/post">Post a skill</a></p>
+    </div>
+  <% } %>
+</div>
+
+<div class="profile-actions">
+  <a href="/board" class="btn btn-secondary">← Back to Board</a>
+  <a href="/matches" class="btn btn-primary">View Matches</a>
+</div>
+
+<%- include('partials/footer') %>

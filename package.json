@@ -1,0 +1,20 @@
+{
+  "name": "skillswap-lic",
+  "version": "1.0.0",
+  "description": "A community board where people teach each other skills through simple, mutual exchange.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js",
+    "test": "jest --testEnvironment node"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.8.0",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^6.3.4"
+  }
+}

@@ -1,0 +1,63 @@
+<%- include('partials/header') %>
+
+<div class="page-header">
+  <h1>Skill Matches</h1>
+  <p class="subtitle">People who can teach each other — mutual skill exchanges</p>
+</div>
+
+<% if (matches.length === 0) { %>
+  <div class="empty-state">
+    <p>No matches found yet. <a href="/board/post">Add more skills</a> to create matches!</p>
+  </div>
+<% } else { %>
+  <div class="matches-grid">
+    <% matches.forEach(match => { %>
+      <div class="match-card">
+        <div class="match-users">
+          <div class="match-user">
+            <div class="match-avatar"><%= match.userA.name.charAt(0).toUpperCase() %></div>
+            <h3><a href="/users/<%= match.userA.id %>"><%= match.userA.name %></a></h3>
+            <% if (match.userA.location) { %>
+              <span class="user-location">📍 <%= match.userA.location %></span>
+            <% } %>
+            <div class="match-skills">
+              <% match.userA.skills.filter(s => s.type === 'teach').forEach(skill => { %>
+                <span class="skill-tag teach-tag"><%= skill.title %></span>
+              <% }) %>
+              <% match.userA.skills.filter(s => s.type === 'learn').forEach(skill => { %>
+                <span class="skill-tag learn-tag"><%= skill.title %></span>
+              <% }) %>
+            </div>
+          </div>
+
+          <div class="match-connector">
+            <div class="match-icon">⇌</div>
+            <div class="shared-categories">
+              <% match.sharedTeachLearn.forEach(cat => { %>
+                <span class="category-badge"><%= cat %></span>
+              <% }) %>
+            </div>
+          </div>
+
+          <div class="match-user">
+            <div class="match-avatar"><%= match.userB.name.charAt(0).toUpperCase() %></div>
+            <h3><a href="/users/<%= match.userB.id %>"><%= match.userB.name %></a></h3>
+            <% if (match.userB.location) { %>
+              <span class="user-location">📍 <%= match.userB.location %></span>
+            <% } %>
+            <div class="match-skills">
+              <% match.userB.skills.filter(s => s.type === 'teach').forEach(skill => { %>
+                <span class="skill-tag teach-tag"><%= skill.title %></span>
+              <% }) %>
+              <% match.userB.skills.filter(s => s.type === 'learn').forEach(skill => { %>
+                <span class="skill-tag learn-tag"><%= skill.title %></span>
+              <% }) %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+<% } %>
+
+<%- include('partials/footer') %>
