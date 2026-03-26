@@ -1,10 +1,5 @@
 import { useState } from "react";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  updateProfile,
-} from "firebase/auth";
-import { auth } from "../firebase";
+import { supabase } from "../supabase";
 import FloatingShapes from "./FloatingShapes";
 
 export default function Auth() {
@@ -21,19 +16,21 @@ export default function Auth() {
     setLoading(true);
     try {
       if (mode === "signup") {
-        const cred = await createUserWithEmailAndPassword(auth, form.email, form.password);
-        if (form.name.trim()) await updateProfile(cred.user, { displayName: form.name.trim() });
+        const { error } = await supabase.auth.signUp({
+          email: form.email,
+          password: form.password,
+          options: { data: { display_name: form.name.trim() || undefined } },
+        });
+        if (error) throw error;
       } else {
-        await signInWithEmailAndPassword(auth, form.email, form.password);
+        const { error } = await supabase.auth.signInWithPassword({
+          email: form.email,
+          password: form.password,
+        });
+        if (error) throw error;
       }
     } catch (err) {
-      const msgs = {
-        "auth/email-already-in-use": "That email is already registered.",
-        "auth/invalid-credential":   "Wrong email or password.",
-        "auth/weak-password":        "Password must be at least 6 characters.",
-        "auth/invalid-email":        "Please enter a valid email.",
-      };
-      setError(msgs[err.code] || err.message);
+      setError(err.message || "Something went wrong.");
     } finally {
       setLoading(false);
     }

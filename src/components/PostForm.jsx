@@ -1,28 +1,28 @@
 import { useState } from "react";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "../firebase";
+import { supabase } from "../supabase";
 
 export default function PostForm({ user, onPosted }) {
   const [form, setForm] = useState({ offer: "", want: "", note: "", community: "" });
   const [loading, setLoading] = useState(false);
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
+  const displayName = user.user_metadata?.display_name || user.email.split("@")[0];
   const valid = form.offer.trim() && form.want.trim();
 
   const handleSubmit = async () => {
     if (!valid) return;
     setLoading(true);
     try {
-      await addDoc(collection(db, "posts"), {
-        name:      user.displayName || user.email.split("@")[0],
+      const { error } = await supabase.from("posts").insert({
+        user_id:   user.id,
+        name:      displayName,
         email:     user.email,
-        userId:    user.uid,
         offer:     form.offer.trim(),
         want:      form.want.trim(),
         note:      form.note.trim(),
         community: form.community.trim(),
-        createdAt: serverTimestamp(),
       });
+      if (error) throw error;
       setForm({ offer: "", want: "", note: "", community: "" });
       onPosted();
     } catch (err) {
@@ -57,7 +57,7 @@ export default function PostForm({ user, onPosted }) {
           Drop Your Spark ⚡
         </h2>
         <p style={{ fontSize: 13, color: "#a99bbe", marginBottom: 20 }}>
-          Posting as <strong>{user.displayName || user.email}</strong>
+          Posting as <strong>{displayName}</strong>
         </p>
 
         <div style={{ display: "flex", flexWrap: "wrap", gap: 14 }}>

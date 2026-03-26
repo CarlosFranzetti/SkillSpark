@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { onAuthStateChanged, signOut } from "firebase/auth";
-import { auth } from "./firebase";
+import { supabase } from "./supabase";
 import Auth from "./components/Auth";
 import Board from "./components/Board";
 import PostForm from "./components/PostForm";
@@ -12,11 +11,16 @@ export default function App() {
   const [toast, setToast] = useState(false);
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (u) => setUser(u ?? null));
-    return unsub;
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+    return () => subscription.unsubscribe();
   }, []);
 
-  const handleLogout = () => signOut(auth);
+  const handleLogout = () => supabase.auth.signOut();
 
   const handlePosted = () => {
     setShowForm(false);

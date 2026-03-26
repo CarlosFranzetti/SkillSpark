@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
-import { collection, onSnapshot, query, orderBy, deleteDoc, doc } from "firebase/firestore";
-import { db } from "../firebase";
+import { useState, useEffect, useCallback } from "react";
+import { supabase } from "../supabase";
 
 // ── Skill emoji mapping ──────────────────────────────────────────────────────
 const SKILL_EMOJIS = {
@@ -69,19 +68,37 @@ function getMatches(posts) {
 
 // ── Board ────────────────────────────────────────────────────────────────────
 export default function Board({ user }) {
-  const [posts, setPosts]   = useState([]);
-  const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState("all");
+  const [posts, setPosts]     = useState([]);
+  const [search, setSearch]   = useState("");
+  const [filter, setFilter]   = useState("all");
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
-    const unsub = onSnapshot(q, (snap) => {
-      setPosts(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
-      setLoading(false);
-    });
-    return unsub;
+  const fetchPosts = useCallback(async () => {
+    const { data, error } = await supabase
+      .from("posts")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (!error) setPosts(data);
+    setLoading(false);
   }, []);
+
+  useEffect(() => {
+    fetchPosts();
+
+    // Real-time subscription
+    const channel = supabase
+      .channel("posts-realtime")
+      .on("postgres_changes", { event: "*", schema: "public", table: "posts" }, () => {
+        fetchPosts();
+      })
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
+  }, [fetchPosts]);
+
+  const handleDelete = async (postId) => {
+    await supabase.from("posts").delete().eq("id", postId);
+  };
 
   const matchMap = getMatches(posts);
 
@@ -154,8 +171,8 @@ export default function Board({ user }) {
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           {filtered.map((p, i) => (
             <Card key={p.id} post={p} matchNames={matchMap[p.id]} index={i}
-              isOwner={p.userId === user.uid}
-              onDelete={async () => { await deleteDoc(doc(db, "posts", p.id)); }}
+              isOwner={p.user_id === user.id}
+              onDelete={() => handleDelete(p.id)}
             />
           ))}
         </div>
