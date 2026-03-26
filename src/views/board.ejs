@@ -1,0 +1,80 @@
+<%- include('partials/header') %>
+
+<div class="page-header">
+  <h1>Community Skill Board</h1>
+  <p class="subtitle">Find someone to teach you, or offer what you know</p>
+</div>
+
+<form class="filter-form" method="GET" action="/board">
+  <div class="filter-group">
+    <select name="type" class="filter-select">
+      <option value="">All Types</option>
+      <option value="teach" <%= filters.type === 'teach' ? 'selected' : '' %>>Teaching</option>
+      <option value="learn" <%= filters.type === 'learn' ? 'selected' : '' %>>Learning</option>
+    </select>
+    <select name="category" class="filter-select">
+      <option value="">All Categories</option>
+      <% categories.forEach(cat => { %>
+        <option value="<%= cat %>" <%= filters.category === cat ? 'selected' : '' %>><%= cat %></option>
+      <% }) %>
+    </select>
+    <input type="text" name="search" class="filter-input" placeholder="Search skills or users..." value="<%= filters.search || '' %>">
+    <button type="submit" class="btn btn-primary">Filter</button>
+    <a href="/board" class="btn btn-secondary">Clear</a>
+  </div>
+</form>
+
+<div class="board-grid">
+  <% if (users.length === 0) { %>
+    <div class="empty-state">
+      <p>No listings found. <a href="/board/post">Be the first to post!</a></p>
+    </div>
+  <% } else { %>
+    <% users.forEach(user => { %>
+      <div class="user-card">
+        <div class="card-header">
+          <h2 class="user-name"><a href="/users/<%= user.id %>"><%= user.name %></a></h2>
+          <% if (user.location) { %>
+            <span class="user-location">📍 <%= user.location %></span>
+          <% } %>
+        </div>
+        <% if (user.bio) { %>
+          <p class="user-bio"><%= user.bio %></p>
+        <% } %>
+        <div class="skills-section">
+          <% const teachSkills = user.skills.filter(s => s.type === 'teach'); %>
+          <% const learnSkills = user.skills.filter(s => s.type === 'learn'); %>
+          <% if (teachSkills.length > 0) { %>
+            <div class="skill-group">
+              <span class="skill-group-label">Can Teach:</span>
+              <div class="skill-tags">
+                <% teachSkills.forEach(skill => { %>
+                  <span class="skill-tag teach-tag" title="<%= skill.description || '' %>">
+                    <%= skill.title %>
+                    <small class="skill-category"><%= skill.category %></small>
+                  </span>
+                <% }) %>
+              </div>
+            </div>
+          <% } %>
+          <% if (learnSkills.length > 0) { %>
+            <div class="skill-group">
+              <span class="skill-group-label">Wants to Learn:</span>
+              <div class="skill-tags">
+                <% learnSkills.forEach(skill => { %>
+                  <span class="skill-tag learn-tag" title="<%= skill.description || '' %>">
+                    <%= skill.title %>
+                    <small class="skill-category"><%= skill.category %></small>
+                  </span>
+                <% }) %>
+              </div>
+            </div>
+          <% } %>
+        </div>
+        <a href="/users/<%= user.id %>" class="btn btn-outline">View Profile →</a>
+      </div>
+    <% }) %>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>
