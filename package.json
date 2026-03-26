@@ -1,20 +1,19 @@
 {
-  "name": "skillswap-lic",
+  "name": "skillspark",
   "version": "1.0.0",
-  "description": "A community board where people teach each other skills through simple, mutual exchange.",
-  "main": "src/server.js",
+  "type": "module",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "node src/server.js",
-    "test": "jest --testEnvironment node"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "better-sqlite3": "^12.8.0",
-    "ejs": "^3.1.9",
-    "express": "^4.18.2"
+    "firebase": "^10.14.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "jest": "^29.7.0",
-    "supertest": "^6.3.4"
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^5.4.0"
   }
 }

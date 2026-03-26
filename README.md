@@ -1,158 +1,93 @@
-# SkillSpark 🎨🤝✨
+# SkillSpaRK ⚡
 
-**Teach what you know. Learn what you don’t. Trade skills with your community.**
+**Teach what you know. Learn what you don't. Trade skills with your community.**
 
-SkillSpark is a colorful community board where people **teach each other skills through simple, mutual exchange** — turning passive networking into real learning, real connections, and real swaps.
-
----
-
-## Why it exists 🌍💡
-People usually see each other through **jobs, status, or credentials**.
-SkillSpark helps people see each other through something more human:
-
-- ✅ **What they can teach** (their strengths)
-- 🌱 **What they want to learn** (their growth)
-
-That two-sided view makes it easy to discover mutual learning opportunities and form real community.
+SkillSpaRK is a community-driven skill-sharing platform — like a dating app for skills. Users post what they can teach and what they want to learn, and the app automatically sparks connections when offers match needs.
 
 ---
 
-## What you can do 🚀
-With SkillSpark, people can:
+## Stack
 
-- 🧠 **Share what they know**
-- 🔎 **Discover others nearby or online**
-- 🔁 **Match** based on teaching/learning overlap
-- 🫶 **Turn community into actual learning**
-
----
-
-## The main screen 🧩🗂️
-A **responsive card grid feed** of posts.
-
-Each card shows:
-
-- 👤 Profile image (or initials)
-- 🏷️ Name + location
-- 📌 A quick headline like:
-  - **Can teach:** Figma, DJing
-  - **Wants to learn:** React, Spanish
-- ✍️ Short bio
-- 🧷 Skill tags
-- 🌐 Format: **In-person / Remote**
-- 🔘 Button: **View Post / Connect**
+| Layer    | Tech                               |
+|----------|------------------------------------|
+| Frontend | React 18 + Vite                    |
+| Auth     | Firebase Authentication (email/pw) |
+| Database | Cloud Firestore (real-time)        |
+| Deploy   | Vercel                             |
 
 ---
 
-## Example card ✉️
-**Carlos F.**
-Brooklyn, NY • Remote / In person
+## Features
 
-### Teaches 🎧🎛️
-- Vinyl DJ basics
-- Discogs crate digging
-- Beginner UI design
-
-### Wants to learn 💻🎞️
-- React
-- Motion design
-- API integration
-
-> Trying to trade practical skills with other creative builders.
-
-**[Connect]**
+- **Auth** — sign up / sign in with email and password
+- **Post a Spark** — share what you teach and what you want to learn, with an optional bio and neighborhood tag
+- **Live Board** — real-time card feed powered by Firestore `onSnapshot`
+- **Spark Matching** — automatic badge when someone else wants to learn exactly what you offer
+- **Search & Filter** — filter by teaching, learning, or search by name / skill / neighborhood
+- **Delete your own posts** — owners see a ✕ button on their cards
 
 ---
 
-## Product structure 🏗️
-### 1) Create Post ✍️
-Users fill out:
-- Name
-- Photo
-- Short bio
-- Skills I can teach
-- Skills I want to learn
-- Availability
-- Location / Remote
-- Preferred format
-- Community tag
+## Local Development
 
-### 2) Browse Board 🧭
-Scroll the grid and filter by:
-- skill
-- teaches
-- wants to learn
-- remote / in-person
-- beginner / advanced
-- community / neighborhood
+```bash
+# 1. Clone
+git clone https://github.com/CarlosFranzetti/SkillSpark.git
+cd SkillSpark
 
-### 3) Match Logic 🔁✨
-The magic happens when:
+# 2. Install deps
+npm install
 
-- **My wants to learn** matches **your teaches**
-- AND **my teaches** matches **your wants to learn**
+# 3. Add Firebase config
+cp .env.example .env
+# Fill in your Firebase project values in .env
 
-That creates a **2-way skill swap**.
+# 4. Run dev server
+npm run dev
+```
 
-(One-way mentorship can come later.)
+### Firebase setup
 
-### 4) Connect 💌
-Users can:
-- send message
-- request swap
-- save profile
-- suggest a session
+1. Create a project at [Firebase Console](https://console.firebase.google.com)
+2. Enable **Authentication → Email/Password**
+3. Create a **Firestore** database (start in test mode or add security rules)
+4. Copy your web app SDK config values into `.env`
 
----
+### Firestore security rules (recommended)
 
-## MVP features (keep it tight) 🎯
-### Must have ✅
-- Auth
-- Create/edit post
-- Card grid feed
-- Skill tags
-- Filters
-- Profile detail page
-- Message or request button
-
-### Nice to have later 🌈
-- Mutual match badge
-- Reviews after a session
-- Calendar scheduling
-- Recurring local meetups
-- Community groups
-- Trust score / attendance history
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /posts/{postId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null;
+      allow delete: if request.auth != null && request.auth.uid == resource.data.userId;
+    }
+  }
+}
+```
 
 ---
 
-## Quick layout idea 🖼️
-### Desktop 🖥️
-- Header: logo • search • filters • create post
-- Sidebar filters
-- Main: card grid (2–4 columns)
+## Deployment (Vercel)
 
-### Mobile 📱
-Cards stack vertically:
-- avatar/name
-- teaches
-- wants to learn
-- bio
-- CTA
+Set the following environment variables in your Vercel project settings (same keys as `.env.example`):
 
----
+```
+VITE_FIREBASE_API_KEY
+VITE_FIREBASE_AUTH_DOMAIN
+VITE_FIREBASE_PROJECT_ID
+VITE_FIREBASE_STORAGE_BUCKET
+VITE_FIREBASE_MESSAGING_SENDER_ID
+VITE_FIREBASE_APP_ID
+```
 
-## Taglines you can use 🗣️
-- **Teach what you know. Learn what you don’t.**
-- **Trade skills with your community.**
-- **A board for real skill exchange.**
-- **Post what you teach. Find what you want to learn.**
+Build command: `npm run build`
+Output directory: `dist`
 
 ---
 
-## Contributing 🤗
-Have an idea that makes skill swaps easier, safer, or more fun?
+## Contributing
 
-- Open an issue with your suggestion
-- Or make a small improvement and share it
-
-Let’s build a board that helps people learn together — for real. ❤️
+Open an issue with your idea, or make a small improvement and share it. Let's build a board that helps people learn together — for real. ❤️

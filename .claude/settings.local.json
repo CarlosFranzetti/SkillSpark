@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(/usr/local/bin/npm install:*)",
+      "Bash(/opt/homebrew/bin/npm install:*)",
+      "Read(//Users/carlosfranzetti/.nvm/**)",
+      "Read(//Users/carlosfranzetti/Library/**)",
+      "Read(//usr/**)",
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "Bash(export PATH=\"/Users/carlosfranzetti/.local/bin:/usr/local/bin:$PATH\")",
+      "Bash(git checkout:*)",
+      "Bash(git rebase:*)",
+      "Bash(GIT_EDITOR=true git rebase --continue)"
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka:wght@400;500;600;700&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: #fef8f5;
+  color: #3d3552;
+  min-height: 100vh;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: #dbb4f0 !important;
+  box-shadow: 0 0 0 4px rgba(219,180,240,0.2);
+}
+
+button { transition: all 0.15s ease; cursor: pointer; }
+button:active { transform: scale(0.96); }
+
+@keyframes popUp {
+  from { opacity: 0; transform: translateY(18px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+@keyframes blobFloat {
+  from { transform: translateY(0)    rotate(0deg); }
+  to   { transform: translateY(-16px) rotate(6deg); }
+}
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-3deg); }
+  50%       { transform: rotate(3deg);  }
+}
+@keyframes slideIn {
+  from { opacity: 0; max-height: 0;    }
+  to   { opacity: 1; max-height: 800px; }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
